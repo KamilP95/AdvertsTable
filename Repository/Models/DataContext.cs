@@ -1,16 +1,13 @@
 ﻿using System.Data.Entity;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace AdvertsTable.Models
+namespace Repository.Models
 {
     public class DataContext : IdentityDbContext
     {
         public DataContext()
-            : base("DefaultConnection")
+            : base("AzureConnection")
         {
         }
 
