@@ -1,10 +1,11 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Repository.IRepositories;
 
 namespace Repository.Models
 {
-    public class DataContext : IdentityDbContext
+    public class DataContext : IdentityDbContext, IDataContext
     {
         public DataContext()
             : base("AzureConnection")

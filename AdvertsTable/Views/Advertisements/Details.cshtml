@@ -4,14 +4,14 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>@Html.DisplayFor(model => model.Title)</h2>
 
 <div>
-    <h4>Advertisement</h4>
+    <h4>@Html.DisplayNameFor(model => model.AddDate) @Html.DisplayFor(model => model.AddDate)</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Category.Name)
+            Kategoria: 
         </dt>
 
         <dd>
@@ -19,40 +19,24 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.User.Email)
+            @Html.DisplayNameFor(model => model.User.FullName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.User.Email)
+            @Html.DisplayFor(model => model.User.UserName)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
+        
         <dt>
             @Html.DisplayNameFor(model => model.Contents)
         </dt>
-
+        <dd/>
         <dd>
             @Html.DisplayFor(model => model.Contents)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.AddDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AddDate)
         </dd>
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Edytuj", "Edit", new { id = Model.Id }, new { @class = "btn btn-warning"})
+    @Html.ActionLink("Powrót", "Index", null, new { @class = "btn btn-primary"})
 </p>

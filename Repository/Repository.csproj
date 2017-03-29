@@ -123,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IRepositories\IAdvertisementRepository.cs" />
+    <Compile Include="IRepositories\IDataContext.cs" />
     <Compile Include="Migrations\201703291647415_startMigration.cs" />
     <Compile Include="Migrations\201703291647415_startMigration.Designer.cs">
       <DependentUpon>201703291647415_startMigration.cs</DependentUpon>

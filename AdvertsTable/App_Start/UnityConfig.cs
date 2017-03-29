@@ -3,6 +3,7 @@ using AdvertsTable.Controllers;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 using Repository.IRepositories;
+using Repository.Models;
 using Repository.Repositories;
 
 namespace AdvertsTable.App_Start
@@ -38,6 +39,7 @@ namespace AdvertsTable.App_Start
             container.RegisterType<AccountController>(new InjectionConstructor());
             container.RegisterType<ManageController>(new InjectionConstructor());
             container.RegisterType<IAdvertisementRepository, AdvertisementRepository>(new PerRequestLifetimeManager());
+            container.RegisterType<IDataContext, DataContext>(new PerRequestLifetimeManager());
         }
     }
 }
