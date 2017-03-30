@@ -302,6 +302,7 @@
     <Content Include="Views\Advertisements\Index.cshtml" />
     <Content Include="Views\Advertisements\MyAdvertisements.cshtml" />
     <Content Include="Views\Categories\Index.cshtml" />
+    <Content Include="Views\Categories\AdsOfCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

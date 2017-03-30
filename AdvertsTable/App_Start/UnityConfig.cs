@@ -40,6 +40,7 @@ namespace AdvertsTable.App_Start
             container.RegisterType<ManageController>(new InjectionConstructor());
             container.RegisterType<IAdvertisementRepository, AdvertisementRepository>(new PerRequestLifetimeManager());
             container.RegisterType<IDataContext, DataContext>(new PerRequestLifetimeManager());
+            container.RegisterType<ICategoryRepository, CategoryRepository>(new PerRequestLifetimeManager());
         }
     }
 }

@@ -1,0 +1,53 @@
+﻿@using Microsoft.AspNet.Identity
+@model IEnumerable<Repository.Models.Advertisement>
+
+@{
+    ViewBag.Title = "AdsOfCategory";
+}
+
+<h2>Ogłoszenia z kategorii @Html.DisplayFor(model => model.FirstOrDefault().Category.Name)</h2>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <p>
+        @Html.ActionLink("Dodaj ogłoszenie", "Create", "Advertisements", null, new { @class = "btn btn-success" })
+    </p>
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink(Html.DisplayNameFor(model => model.Title).ToString(), "AdsOfCategory", new { id = Model.FirstOrDefault()?.CategoryId, sortOrder = ViewBag.TitleSort })
+        </th>
+        <th>
+            @Html.ActionLink(Html.DisplayNameFor(model => model.Category.Name).ToString(), "AdsOfCategory", new { id = Model.FirstOrDefault()?.CategoryId, sortOrder = ViewBag.TitleSort })
+        </th>
+        <th>
+            @Html.ActionLink(Html.DisplayNameFor(model => model.AddDate).ToString(), "AdsOfCategory", new { id = Model.FirstOrDefault()?.CategoryId, sortOrder = ViewBag.TitleSort })
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AddDate)
+            </td>
+            <td>
+                @Html.ActionLink("Szczegóły", "Details", "Advertisements", new { id = item.Id }, new { @class = "btn btn-primary" })
+                @if (User.Identity.IsAuthenticated && User.Identity.GetUserId() == item.UserId)
+                {
+                    @Html.ActionLink("Edytuj", "Edit", "Advertisements", new { id = item.Id }, new { @class = "btn btn-warning" })
+                    @Html.ActionLink("Usuń", "Delete", "Advertisements", new { id = item.Id }, new { @class = "btn btn-danger" })
+                }
+            </td>
+        </tr>
+    }
+
+</table>

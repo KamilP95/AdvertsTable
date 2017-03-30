@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Repository.Models
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -22,6 +24,8 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Ogłoszenia", "Index", "Advertisements")</li>
+                    
+                    
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li>@Html.ActionLink("Moje Ogłoszenia", "MyAdvertisements", "Advertisements")</li>

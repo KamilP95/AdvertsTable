@@ -77,15 +77,14 @@ namespace Repository.Repositories
                 case "categoryDsc":
                     advertisements = advertisements.OrderByDescending(ad => ad.Category.Name);
                     break;
+                default:
                 case "addDate":
                     advertisements = advertisements.OrderBy(ad => ad.AddDate);
                     break;
                 case "addDateDsc":
                     advertisements = advertisements.OrderByDescending(ad => ad.AddDate);
                     break;
-                default:
-                    advertisements = advertisements.OrderBy(ad => ad.Id);
-                    break;
+                
             }
             return advertisements;
         }
