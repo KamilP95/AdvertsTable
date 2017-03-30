@@ -22,7 +22,10 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Ogłoszenia", "Index", "Advertisements")</li>
-                    
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Moje Ogłoszenia", "MyAdvertisements", "Advertisements")</li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -32,7 +35,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Zadanie rekrutacyjne dla PGS Software</p>
+            <p>&copy; @DateTime.Now.Year - Kamil Partyka<br/>Zadanie rekrutacyjne dla PGS Software</p>
         </footer>
     </div>
 

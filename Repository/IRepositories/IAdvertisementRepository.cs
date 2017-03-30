@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -22,5 +23,9 @@ namespace Repository.IRepositories
         void AddAdvertisement(Advertisement advertisement);
 
         void UpdateAdvertisement(Advertisement advertisement);
+
+        IQueryable<Advertisement> SortAdvertisements(IQueryable<Advertisement> advertisements, string sortOrder);
+
+        IQueryable<Advertisement> GetUserAdvertisements(string userId, bool includeCategory = false, bool includeUser = false);
     }
 }

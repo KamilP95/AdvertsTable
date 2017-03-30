@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using PagedList;
 using Repository.IRepositories;
 using Repository.Models;
 using Repository.Repositories;
@@ -23,14 +24,46 @@ namespace AdvertsTable.Controllers
             _repository = repository;
         }
         
-        [HttpGet, Route("ogloszenia")]
-        public ActionResult Index()
+        
+        public ActionResult Index(int? page, string sortOrder)
         {
+            #region sortingProperties
+
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.TitleSort = sortOrder == "title" ? "titleDsc" : "title";
+            ViewBag.CategorySort = sortOrder == "category" ? "categoryDsc" : "category";
+            ViewBag.AddDateSort = sortOrder == "addDate" ? "addDateDsc" : "addDate";
+
+            #endregion
+
+            int currentPage = page ?? 1;
+            int adsPerPage = 10;
             var advertisements = _repository.GetAdvertisements(true);
-            return View(advertisements.ToList());
+            advertisements = _repository.SortAdvertisements(advertisements, sortOrder);
+            return View(advertisements.ToPagedList<Advertisement>(currentPage, adsPerPage));
         }
 
-        [HttpGet, Route(@"ogloszenia/{id}")]
+
+        public ActionResult MyAdvertisements(int? page, string sortOrder)
+        {
+            #region sortingProperties
+
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.TitleSort = sortOrder == "title" ? "titleDsc" : "title";
+            ViewBag.CategorySort = sortOrder == "category" ? "categoryDsc" : "category";
+            ViewBag.AddDateSort = sortOrder == "addDate" ? "addDateDsc" : "addDate";
+
+            #endregion
+
+            int currentPage = page ?? 1;
+            int adsPerPage = 10;
+            string userId = User.Identity.GetUserId();
+            var advertisements = _repository.GetUserAdvertisements(userId, true);
+            advertisements = _repository.SortAdvertisements(advertisements, sortOrder);
+            return View(advertisements.ToPagedList<Advertisement>(currentPage, adsPerPage));
+        }
+
+        
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -45,7 +78,7 @@ namespace AdvertsTable.Controllers
             return View(advertisement);
         }
 
-        [HttpGet, Route(@"ogloszenia/dodaj")]
+        [Authorize]
         public ActionResult Create()
         {
             ViewBag.CategoryId = _repository.GetCategoriesList();
@@ -53,7 +86,7 @@ namespace AdvertsTable.Controllers
         }
 
 
-        [HttpPost, Route(@"ogloszenia/dodaj")]
+        [HttpPost]
         [ValidateAntiForgeryToken, Authorize]
         public ActionResult Create([Bind(Include = "Title,CategoryId,Contents")] Advertisement advertisement)
         {
@@ -65,7 +98,7 @@ namespace AdvertsTable.Controllers
                 {
                     _repository.AddAdvertisement(advertisement);
                     _repository.SaveChanges();
-                    return RedirectToAction("Index");
+                    return RedirectToAction("MyAdvertisements");
                 }
                 catch (Exception e)
                 {
@@ -76,7 +109,7 @@ namespace AdvertsTable.Controllers
             return View(advertisement);
         }
 
-        [HttpGet, Route(@"ogloszenia/edytuj/{id}")]
+        [Authorize]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -88,12 +121,17 @@ namespace AdvertsTable.Controllers
             {
                 return HttpNotFound();
             }
+            if (advertisement.UserId != User.Identity.GetUserId())
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             ViewBag.CategoryId = _repository.GetCategoriesList(advertisement.CategoryId);
             
             return View(advertisement);
         }
 
-        [HttpPost, Route(@"ogloszenia/edytuj/{id}")]
+        [Authorize]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Title,CategoryId,Contents,AddDate,UserId")] Advertisement advertisement)
         {
@@ -116,7 +154,7 @@ namespace AdvertsTable.Controllers
             return View(advertisement);
         }
 
-        [HttpGet, Route(@"ogloszenia/usun/{id}")]
+        [Authorize]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -128,16 +166,20 @@ namespace AdvertsTable.Controllers
             {
                 return HttpNotFound();
             }
-            
+            if (advertisement.UserId != User.Identity.GetUserId())
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
             return View(advertisement);
         }
 
 
-        [HttpPost, Route(@"ogloszenia/usun/{id}")]
-        [ValidateAntiForgeryToken]
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken, Authorize]
         public ActionResult DeleteConfirmed(int id)
         {
+
             _repository.DeleteAdvertisement(id);
             try
             {

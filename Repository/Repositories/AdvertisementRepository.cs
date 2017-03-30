@@ -60,5 +60,41 @@ namespace Repository.Repositories
         {
             _db.Entry(advertisement).State = EntityState.Modified;
         }
+
+        public IQueryable<Advertisement> SortAdvertisements(IQueryable<Advertisement> advertisements, string sortOrder)
+        {
+            switch (sortOrder)
+            {
+                case "title":
+                    advertisements = advertisements.OrderBy(ad => ad.Title);
+                    break;
+                case "titleDsc":
+                    advertisements = advertisements.OrderByDescending(ad => ad.Title);
+                    break;
+                case "category":
+                    advertisements = advertisements.OrderBy(ad => ad.Category.Name);
+                    break;
+                case "categoryDsc":
+                    advertisements = advertisements.OrderByDescending(ad => ad.Category.Name);
+                    break;
+                case "addDate":
+                    advertisements = advertisements.OrderBy(ad => ad.AddDate);
+                    break;
+                case "addDateDsc":
+                    advertisements = advertisements.OrderByDescending(ad => ad.AddDate);
+                    break;
+                default:
+                    advertisements = advertisements.OrderBy(ad => ad.Id);
+                    break;
+            }
+            return advertisements;
+        }
+
+        public IQueryable<Advertisement> GetUserAdvertisements(string userId, bool includeCategory = false, bool includeUser = false)
+        {
+            var advertisements = GetAdvertisements(includeCategory, includeUser);
+            advertisements = advertisements.Where(ad => ad.UserId == userId);
+            return advertisements;
+        }
     }
 }
